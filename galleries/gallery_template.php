@@ -41,7 +41,7 @@ $z1 = $content1->results(true);
                     $count = $content->count();
                     if ($count > 0) {
                         $results = $content->results();
-                    }
+                    
                     foreach ($results as $r):
                         ?>
 
@@ -49,7 +49,11 @@ $z1 = $content1->results(true);
                             <div class="col-sm-3 col-xs-6" style="padding:5px;">
                                 <img  class="img-thumbnail" src="<?php echo $r->ilink; ?>" alt="<?php echo $r->gname; ?>"></div>
                         </a>
-<?php endforeach; ?>
+<?php endforeach; } 
+
+else { echo '<h3>There are no images available at the moment</h3>'; }
+
+?>
 
                 </div></div>
             <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
@@ -74,7 +78,7 @@ $z1 = $content1->results(true);
                             <p>Kies alle foto's die je wilt uploaden en druk op "Versturen" </p>
                             <p>Let op! Je kan in totaal 128mb maximaal aan foto's tegelijk uploaden.</p>
                             <form name="form3" enctype="multipart/form-data" method="post" action="<?php $_SERVER['DOCUMENT_ROOT'] ?>/usersc/upload.php">
-                                <p><input class="hidden" type="text" name="gname" value="<?php echo $z1[0]['pname']; ?>" /></p><br />
+                                <p><input class="hidden" type="text" name="gname" value="<?php echo $z1[0]['title']; ?>" /></p><br />
                                 <p><input class="form-control" type="file" size="32" name="my_field[]" value="" multiple/></p><br />
                                 <p class="button"><input type="hidden" name="action" value="addgallery" />
                                     <input class="btn btn-primary" type="submit" name="Submit" value="Versturen" /></p>

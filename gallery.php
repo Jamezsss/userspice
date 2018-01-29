@@ -11,7 +11,7 @@ if (isset($user) && $user->isLoggedIn()) {
         <div class="row" style="text-align: center; justify-content: center;">
             <div class="col-md-12">
 
-                <h1>Vulpine Events Galerij</h1><br />
+                <h1>Website Galleries</h1><br />
 
                 <?php
                 $gpage = '1';
@@ -19,7 +19,7 @@ if (isset($user) && $user->isLoggedIn()) {
                 $count = $content->count();
                 if ($count > 0) {
                     $results = $content->results();
-                }
+                
                 foreach ($results as $r):
                     $pname = $r->title;
                     $content1 = $db->query("SELECT * FROM gallery WHERE gname = ?", [$pname]);
@@ -31,25 +31,25 @@ if (isset($user) && $user->isLoggedIn()) {
                         <div class="col-sm-3 col-xs-6" style="padding:5px;">
                             <img  class="img-thumbnail" src="galleries/<?php echo $z1[0]['ilink'] ?>" alt="<?php echo $r->title; ?>"><br /><?php echo $r->title; ?></div>
                     </a>
-                <?php endforeach; ?>
+                <?php endforeach; } else {echo '<h3>There are no galleries available at the moment</h3>';}?>
             </div>
             <?php
             if ($user->isLoggedIn()) {
                 if (hasPerm([2], $user->data()->id)) {
                     ?>
                     <div class="col-md-12"><hr><br />
-                        <h2>Maak een nieuwe galerij aan</h2><br />
+                        <h2>Make a new gallery</h2><br />
 
                         <div class="col-md-4 col-md-offset-4">
 
                             <fieldset>
-                                <p>Kies de galerij naam en alle foto's die je wilt uploaden en klik op "Versturen" </p>
+                                <p>Choose your gallery name and images you want to upload below. </p>
                                 <br />
-                                <h3>Galerij Naam:</h3><br />
+                                <h3>Gallery name:</h3><br />
                                 <form name="form3" enctype="multipart/form-data" method="post" action="usersc/upload.php">
                                     <p><input class="form-control" type="text" name="gname" placeholder="'Furwalk Oss 06-2013' of 'Camping Trip 08-2016'" /></p><br />
                                     <p><input class="form-control" type="file" size="32" name="my_field[]" value="" multiple/></p><br />
-                                    <p>Let op! Je kan in totaal 128mb maximaal aan foto's tegelijk uploaden. Wil je toch nog extra foto's? Deze kan je op de aangemaakte galerij onderaan de pagina alsnog uploaden.</p><br />
+                                    <br />
                                     <p class="button"><input type="hidden" name="action" value="cgallery" />
                                         <input class="btn btn-primary" type="submit" name="Submit" value="Versturen" /></p>
                                 </form>

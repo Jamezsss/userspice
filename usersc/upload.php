@@ -300,7 +300,7 @@ if ($action == 'simple') {
             // now, we start the upload 'process'. That is, to copy the uploaded file
             // from its temporary location to the wanted location
             // It could be something like $handle->Process('/home/www/my_uploads/');
-            $handle->Process($dir_dest);
+            $handle->Process('../galleries/images/');
 
             // we check if everything went OK
             if ($handle->processed) {

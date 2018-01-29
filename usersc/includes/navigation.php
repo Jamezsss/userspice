@@ -7,6 +7,7 @@
 		<!-- If you want something to be in the TOP menu put it down in this section -->
 		<!-- Uncomment the line below to test -->
 		<li><a href="<?=$us_url_root?>gallery.php"><i class="fa fa-picture-o"></i> Galleries</a></li>	
+                <li><a href="<?=$us_url_root?>agenda/"><i class="fa fa-calendar"></i> Agenda</a></li>
 
 <!-- If you want to do dropdown menus on the top, uncomment out the section below -->
 		<!-- <li class="dropdown"><a class="dropdown-toggle" href="" data-toggle="dropdown"><i class="fa fa-wrench"></i> Custom 1 <b class="caret"></b></a>

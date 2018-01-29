@@ -135,7 +135,7 @@ if(isset($user) && $user->isLoggedIn()){
                 $count = $content->count();
                 if ($count > 0) {
                     $results = $content->results();
-                }
+                
                 foreach ($results as $r):
                     ?>
                     <li>
@@ -155,6 +155,7 @@ if(isset($user) && $user->isLoggedIn()){
                                     
                                 } else {
                                     ?>
+                                    <li><a href="<?php echo $r->page; ?>"><span class="glyphicon glyphicon-pencil"></span> More Info</a></li>
                                     <li><a href="https://vulpine.events/users/join.php" style="color:#ffe43c"><span class="glyphicon glyphicon-pencil"></span> Login/Register. *</a></li>
                                     <?php
                                 }
@@ -172,11 +173,13 @@ if(isset($user) && $user->isLoggedIn()){
 
 
 
-                                        if ($z[0]) {
+                                        if ($z) {
                                             ?>
+                                            <li><a href="<?php echo $r->page; ?>"><span class="glyphicon glyphicon-pencil"></span> More Info</a></li>
                                             <li data-toggle="modal" data-target="#c<?php echo $r->id; ?>"><span class="glyphicon glyphicon-remove"></span>  Cancel my registration</li>
                                         <?php } else {
                                             ?>
+                                            <li><a href="<?php echo $r->page; ?>"><span class="glyphicon glyphicon-pencil"></span> More Info</a></li>
                                             <li data-toggle="modal" data-target="#<?php echo $r->id; ?>"><span class="glyphicon glyphicon-ok"></span>  I'm going!</li>
                                             <?php
                                         }
@@ -211,7 +214,7 @@ if(isset($user) && $user->isLoggedIn()){
                                     <div class="form-group">
                                         <label for="day"><h4>Day:</h4></label>
                                         <select class="form-control" id="day" name="day"  value="">
-                                            <option value="<?php echo $r->day; ?>" selected disabled hidden><?php echo $r->day; ?></option>
+                                            <option value="<?php echo $r->day; ?>" selected hidden><?php echo $r->day; ?></option>
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -367,7 +370,7 @@ if(isset($user) && $user->isLoggedIn()){
                             </div>
                         </div>
                     </div>
-<?php endforeach; ?>
+<?php endforeach; } else {echo '<h3 style="text-align:center;">There are no events planned the coming months.</h3>';} ?>
             </ul>
         </div>
     </div>
