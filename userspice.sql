@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Gegenereerd op: 21 jan 2018 om 14:19
--- Serverversie: 10.0.31-MariaDB-0ubuntu0.16.04.2
--- PHP-versie: 7.0.22-0ubuntu0.16.04.1
+-- Host: 127.0.0.1:3306
+-- Gegenereerd op: 30 jan 2018 om 00:00
+-- Serverversie: 5.7.19
+-- PHP-versie: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vulpinedesign_userspice_test`
+-- Database: `userspice`
 --
 
 -- --------------------------------------------------------
@@ -26,24 +28,23 @@ SET time_zone = "+00:00";
 -- Tabelstructuur voor tabel `agenda`
 --
 
-CREATE TABLE `agenda` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `agenda`;
+CREATE TABLE IF NOT EXISTS `agenda` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `page` varchar(100) NOT NULL,
+  `title` varchar(40) NOT NULL,
+  `descr` varchar(400) NOT NULL,
+  `einfo` varchar(500) NOT NULL,
+  `price` varchar(500) NOT NULL,
+  `location` varchar(300) NOT NULL,
   `day` int(2) NOT NULL,
   `month` varchar(20) NOT NULL,
   `year` int(4) NOT NULL,
   `time` varchar(8) NOT NULL,
-  `title` varchar(40) NOT NULL,
-  `descr` varchar(400) NOT NULL,
-  `fblink` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Gegevens worden geëxporteerd voor tabel `agenda`
---
-
-INSERT INTO `agenda` (`id`, `datetime`, `day`, `month`, `year`, `time`, `title`, `descr`, `fblink`) VALUES
-(2, '2018-01-21 02:05:50', 11, 'Januari', 2018, '14:00', 'Test Event', 'sfdsdfsdf', 'https://facebook.com/vulpine.events/');
+  `fblink` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -51,19 +52,21 @@ INSERT INTO `agenda` (`id`, `datetime`, `day`, `month`, `year`, `time`, `title`,
 -- Tabelstructuur voor tabel `articles`
 --
 
-CREATE TABLE `articles` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `articles`;
+CREATE TABLE IF NOT EXISTS `articles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(40) NOT NULL,
   `content` varchar(5000) NOT NULL,
-  `encontent` varchar(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `encontent` varchar(5000) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `articles`
 --
 
 INSERT INTO `articles` (`id`, `title`, `content`, `encontent`) VALUES
-(1, 'Titel', 'NL Teksten Testen<br>', 'EN Tekst');
+(1, 'Titel', 'NL Teksten<br>', 'EN Tekst');
 
 -- --------------------------------------------------------
 
@@ -71,19 +74,16 @@ INSERT INTO `articles` (`id`, `title`, `content`, `encontent`) VALUES
 -- Tabelstructuur voor tabel `attendees`
 --
 
-CREATE TABLE `attendees` (
-  `regid` int(11) NOT NULL,
+DROP TABLE IF EXISTS `attendees`;
+CREATE TABLE IF NOT EXISTS `attendees` (
+  `regid` int(11) NOT NULL AUTO_INCREMENT,
   `eventid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `going` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+  `going` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`regid`),
+  KEY `id` (`eventid`),
+  KEY `userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Gegevens worden geëxporteerd voor tabel `attendees`
---
-
-INSERT INTO `attendees` (`regid`, `eventid`, `userid`, `going`) VALUES
-(4, 2, 1, 'y');
 
 -- --------------------------------------------------------
 
@@ -91,14 +91,16 @@ INSERT INTO `attendees` (`regid`, `eventid`, `userid`, `going`) VALUES
 -- Tabelstructuur voor tabel `audit`
 --
 
-CREATE TABLE `audit` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `audit`;
+CREATE TABLE IF NOT EXISTS `audit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
   `page` varchar(255) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ip` varchar(255) NOT NULL,
-  `viewed` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `viewed` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `audit`
@@ -109,7 +111,13 @@ INSERT INTO `audit` (`id`, `user`, `page`, `timestamp`, `ip`, `viewed`) VALUES
 (2, 0, '44', '2017-08-14 17:32:22', '::1', 0),
 (3, 0, '4', '2017-09-16 17:53:58', '::1', 0),
 (4, 0, '4', '2017-10-09 15:41:11', '192.168.0.222', 0),
-(5, 0, '3', '2018-01-21 12:47:38', '5.228.16.95', 0);
+(5, 0, '3', '2018-01-21 12:47:38', '5.228.16.95', 0),
+(6, 0, '24', '2018-01-25 11:29:43', '92.40.255.115', 0),
+(7, 0, '3', '2018-01-25 11:29:43', '92.40.255.115', 0),
+(8, 0, '3', '2018-01-25 11:29:46', '92.40.255.115', 0),
+(9, 0, '22', '2018-01-25 11:29:49', '92.40.255.115', 0),
+(10, 0, '3', '2018-01-25 11:29:50', '92.40.255.115', 0),
+(11, 0, '3', '2018-01-25 22:32:36', '176.212.36.191', 0);
 
 -- --------------------------------------------------------
 
@@ -117,16 +125,18 @@ INSERT INTO `audit` (`id`, `user`, `page`, `timestamp`, `ip`, `viewed`) VALUES
 -- Tabelstructuur voor tabel `crons`
 --
 
-CREATE TABLE `crons` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `crons`;
+CREATE TABLE IF NOT EXISTS `crons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(1) NOT NULL DEFAULT '1',
   `sort` int(3) NOT NULL,
   `name` varchar(255) NOT NULL,
   `file` varchar(255) NOT NULL,
   `createdby` int(11) NOT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `crons`
@@ -141,11 +151,13 @@ INSERT INTO `crons` (`id`, `active`, `sort`, `name`, `file`, `createdby`, `creat
 -- Tabelstructuur voor tabel `crons_logs`
 --
 
-CREATE TABLE `crons_logs` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `crons_logs`;
+CREATE TABLE IF NOT EXISTS `crons_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `cron_id` int(11) NOT NULL,
   `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -154,8 +166,9 @@ CREATE TABLE `crons_logs` (
 -- Tabelstructuur voor tabel `email`
 --
 
-CREATE TABLE `email` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `email`;
+CREATE TABLE IF NOT EXISTS `email` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `website_name` varchar(100) NOT NULL,
   `smtp_server` varchar(100) NOT NULL,
   `smtp_port` int(10) NOT NULL,
@@ -169,8 +182,9 @@ CREATE TABLE `email` (
   `debug_level` int(1) NOT NULL DEFAULT '0',
   `isSMTP` int(1) NOT NULL DEFAULT '0',
   `isHTML` varchar(5) NOT NULL DEFAULT 'true',
-  `useSMTPauth` varchar(6) NOT NULL DEFAULT 'true'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `useSMTPauth` varchar(6) NOT NULL DEFAULT 'true',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `email`
@@ -185,21 +199,13 @@ INSERT INTO `email` (`id`, `website_name`, `smtp_server`, `smtp_port`, `email_lo
 -- Tabelstructuur voor tabel `gallery`
 --
 
-CREATE TABLE `gallery` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `gallery`;
+CREATE TABLE IF NOT EXISTS `gallery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ilink` varchar(140) COLLATE utf8_unicode_ci NOT NULL,
-  `gname` varchar(140) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Gegevens worden geëxporteerd voor tabel `gallery`
---
-
-INSERT INTO `gallery` (`id`, `ilink`, `gname`) VALUES
-(204, 'images/2d40ec94cf457f36ccbba700ede570c9.jpg', 'Test Gallery'),
-(205, 'images/84b4e100b097c19f2061a17c38e5fb59.jpg', 'Test Gallery'),
-(206, 'images/54586bb36c557d6734cfd313fb9b148a.jpg', 'Test Gallery'),
-(207, 'images/92219e2e37e92f005507653e6b39059e.jpg', 'Test Gallery');
+  `gname` varchar(140) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -207,11 +213,15 @@ INSERT INTO `gallery` (`id`, `ilink`, `gname`) VALUES
 -- Tabelstructuur voor tabel `groups_menus`
 --
 
-CREATE TABLE `groups_menus` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `groups_menus`;
+CREATE TABLE IF NOT EXISTS `groups_menus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(15) NOT NULL,
-  `menu_id` int(15) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `menu_id` int(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `menu_id` (`menu_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `groups_menus`
@@ -255,14 +265,16 @@ INSERT INTO `groups_menus` (`id`, `group_id`, `menu_id`) VALUES
 -- Tabelstructuur voor tabel `keys`
 --
 
-CREATE TABLE `keys` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `keys`;
+CREATE TABLE IF NOT EXISTS `keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `stripe_ts` varchar(255) NOT NULL,
   `stripe_tp` varchar(255) NOT NULL,
   `stripe_ls` varchar(255) NOT NULL,
   `stripe_lp` varchar(255) NOT NULL,
   `recap_pub` varchar(100) NOT NULL,
-  `recap_pri` varchar(100) NOT NULL
+  `recap_pri` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -271,13 +283,15 @@ CREATE TABLE `keys` (
 -- Tabelstructuur voor tabel `logs`
 --
 
-CREATE TABLE `logs` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(3) NOT NULL,
   `logdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `logtype` varchar(25) NOT NULL,
-  `lognote` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `lognote` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=135 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `logs`
@@ -323,7 +337,23 @@ INSERT INTO `logs` (`id`, `user_id`, `logdate`, `logtype`, `lognote`) VALUES
 (115, 1, '2018-01-20 22:40:18', 'Notifications - Admin', 'Deleted Notification ID #11 read.'),
 (116, 1, '2018-01-20 22:59:53', 'Pages Manager', 'Changed private from private to public for Page #117 and stripped re_auth.'),
 (117, 1, '2018-01-21 00:02:10', 'Pages Manager', 'Changed private from private to public for Page #118 and stripped re_auth.'),
-(118, 1, '2018-01-21 01:57:06', 'User', 'User logged in.');
+(118, 1, '2018-01-21 01:57:06', 'User', 'User logged in.'),
+(119, 1, '2018-01-21 15:04:11', 'User', 'User logged in.'),
+(120, 1, '2018-01-21 16:15:27', 'User', 'User logged in.'),
+(121, 1, '2018-01-21 16:16:11', 'User Manager', 'Updated last name for The from Admin to Admin.'),
+(122, 1, '2018-01-21 16:16:12', 'User Manager', 'Updated password for The.'),
+(123, 2, '2018-01-22 12:26:20', 'User', 'User logged in.'),
+(124, 1, '2018-01-24 16:42:36', 'User', 'User logged in.'),
+(125, 1, '2018-01-29 01:45:15', 'User', 'User logged in.'),
+(126, 1, '2018-01-29 01:49:04', 'User', 'User logged in.'),
+(127, 1, '2018-01-29 03:07:25', 'Setting Change', 'Changed us_css3 from ../users/css/custom.css to ../usersc/css/custom.css.'),
+(128, 1, '2018-01-29 04:37:19', 'User', 'User logged in.'),
+(129, 1, '2018-01-29 20:28:50', 'System Updates', 'Updated old Blacklisted logs to IP Logging type.'),
+(130, 1, '2018-01-29 20:28:50', 'System Updates', 'Added cloaking to users.'),
+(131, 1, '2018-01-29 20:28:50', 'System Updates', 'Update 2XQjsKYJAfn1 successfully deployed.'),
+(132, 1, '2018-01-29 21:22:21', 'Setting Change', 'Changed site_offline from 0 to 1.'),
+(133, 1, '2018-01-29 21:22:21', 'Setting Change', 'Changed forced notifications from  to 0.'),
+(134, 1, '2018-01-29 22:46:22', 'Setting Change', 'Changed site_offline from 1 to 0.');
 
 -- --------------------------------------------------------
 
@@ -331,11 +361,14 @@ INSERT INTO `logs` (`id`, `user_id`, `logdate`, `logtype`, `lognote`) VALUES
 -- Tabelstructuur voor tabel `logs_exempt`
 --
 
-CREATE TABLE `logs_exempt` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `logs_exempt`;
+CREATE TABLE IF NOT EXISTS `logs_exempt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `createdby` int(11) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `logs_exempt_type` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -344,8 +377,9 @@ CREATE TABLE `logs_exempt` (
 -- Tabelstructuur voor tabel `menus`
 --
 
-CREATE TABLE `menus` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `menus`;
+CREATE TABLE IF NOT EXISTS `menus` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `menu_title` varchar(255) NOT NULL,
   `parent` int(10) NOT NULL,
   `dropdown` int(1) NOT NULL,
@@ -353,8 +387,9 @@ CREATE TABLE `menus` (
   `display_order` int(10) NOT NULL,
   `label` varchar(255) NOT NULL,
   `link` varchar(255) NOT NULL,
-  `icon_class` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `icon_class` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `menus`
@@ -390,16 +425,18 @@ INSERT INTO `menus` (`id`, `menu_title`, `parent`, `dropdown`, `logged_in`, `dis
 -- Tabelstructuur voor tabel `messages`
 --
 
-CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `msg_from` int(11) NOT NULL,
   `msg_to` int(11) NOT NULL,
   `msg_body` text NOT NULL,
   `msg_read` int(1) NOT NULL,
   `msg_thread` int(11) NOT NULL,
   `deleted` int(1) NOT NULL,
-  `sent_on` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `sent_on` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `messages`
@@ -415,8 +452,9 @@ INSERT INTO `messages` (`id`, `msg_from`, `msg_to`, `msg_body`, `msg_read`, `msg
 -- Tabelstructuur voor tabel `message_threads`
 --
 
-CREATE TABLE `message_threads` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `message_threads`;
+CREATE TABLE IF NOT EXISTS `message_threads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `msg_to` int(11) NOT NULL,
   `msg_from` int(11) NOT NULL,
   `msg_subject` varchar(255) NOT NULL,
@@ -425,8 +463,9 @@ CREATE TABLE `message_threads` (
   `archive_from` int(1) NOT NULL DEFAULT '0',
   `archive_to` int(1) NOT NULL DEFAULT '0',
   `hidden_from` int(1) NOT NULL DEFAULT '0',
-  `hidden_to` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `hidden_to` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `message_threads`
@@ -442,14 +481,16 @@ INSERT INTO `message_threads` (`id`, `msg_to`, `msg_from`, `msg_subject`, `last_
 -- Tabelstructuur voor tabel `mqtt`
 --
 
-CREATE TABLE `mqtt` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `mqtt`;
+CREATE TABLE IF NOT EXISTS `mqtt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `server` varchar(255) NOT NULL,
   `port` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `nickname` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `nickname` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `mqtt`
@@ -464,16 +505,18 @@ INSERT INTO `mqtt` (`id`, `server`, `port`, `username`, `password`, `nickname`) 
 -- Tabelstructuur voor tabel `notifications`
 --
 
-CREATE TABLE `notifications` (
-  `id` int(11) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `notifications`;
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `message` mediumtext NOT NULL,
   `is_read` tinyint(4) NOT NULL,
   `is_archived` tinyint(1) DEFAULT '0',
   `date_created` datetime DEFAULT NULL,
   `date_read` datetime DEFAULT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `notifications`
@@ -488,14 +531,16 @@ INSERT INTO `notifications` (`id`, `user_id`, `message`, `is_read`, `is_archived
 -- Tabelstructuur voor tabel `pages`
 --
 
-CREATE TABLE `pages` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `pages`;
+CREATE TABLE IF NOT EXISTS `pages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `page` varchar(100) NOT NULL,
   `title` varchar(50) NOT NULL,
   `gpage` int(11) DEFAULT NULL,
   `private` int(11) NOT NULL DEFAULT '0',
-  `re_auth` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `re_auth` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `pages`
@@ -564,8 +609,7 @@ INSERT INTO `pages` (`id`, `page`, `title`, `gpage`, `private`, `re_auth`) VALUE
 (84, 'gallery.php', '', NULL, 0, 0),
 (85, 'usersc/upload.php', '', NULL, 1, 0),
 (117, 'agenda/index.php', '', NULL, 0, 0),
-(118, 'agenda/attend.php', '', NULL, 0, 0),
-(119, 'galleries/test_gallery.php', 'Test Gallery', 1, 0, 0);
+(118, 'agenda/attend.php', '', NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -573,10 +617,12 @@ INSERT INTO `pages` (`id`, `page`, `title`, `gpage`, `private`, `re_auth`) VALUE
 -- Tabelstructuur voor tabel `permissions`
 --
 
-CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `permissions`
@@ -592,11 +638,13 @@ INSERT INTO `permissions` (`id`, `name`) VALUES
 -- Tabelstructuur voor tabel `permission_page_matches`
 --
 
-CREATE TABLE `permission_page_matches` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `permission_page_matches`;
+CREATE TABLE IF NOT EXISTS `permission_page_matches` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_id` int(15) NOT NULL,
-  `page_id` int(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `page_id` int(15) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `permission_page_matches`
@@ -651,11 +699,13 @@ INSERT INTO `permission_page_matches` (`id`, `permission_id`, `page_id`) VALUES
 -- Tabelstructuur voor tabel `profiles`
 --
 
-CREATE TABLE `profiles` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `profiles`;
+CREATE TABLE IF NOT EXISTS `profiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `bio` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `bio` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `profiles`
@@ -663,7 +713,9 @@ CREATE TABLE `profiles` (
 
 INSERT INTO `profiles` (`id`, `user_id`, `bio`) VALUES
 (1, 1, '<h1>This is the Admin\'s bio. Testing</h1>'),
-(2, 2, 'This is your bio');
+(2, 2, 'This is your bio'),
+(11, 11, 'This is your bio'),
+(12, 12, 'This is your bio');
 
 -- --------------------------------------------------------
 
@@ -671,8 +723,9 @@ INSERT INTO `profiles` (`id`, `user_id`, `bio`) VALUES
 -- Tabelstructuur voor tabel `settings`
 --
 
-CREATE TABLE `settings` (
-  `id` int(50) NOT NULL,
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
   `recaptcha` int(1) NOT NULL DEFAULT '0',
   `force_ssl` int(1) NOT NULL,
   `css_sample` int(1) NOT NULL,
@@ -724,15 +777,18 @@ CREATE TABLE `settings` (
   `copyright` varchar(255) NOT NULL,
   `custom_settings` int(1) NOT NULL,
   `system_announcement` varchar(255) NOT NULL,
-  `twofa` int(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `twofa` int(1) DEFAULT '0',
+  `force_notif` tinyint(1) DEFAULT NULL,
+  `cron_ip` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `settings`
 --
 
-INSERT INTO `settings` (`id`, `recaptcha`, `force_ssl`, `css_sample`, `us_css1`, `us_css2`, `us_css3`, `site_name`, `language`, `track_guest`, `site_offline`, `force_pr`, `glogin`, `fblogin`, `gid`, `gsecret`, `gredirect`, `ghome`, `fbid`, `fbsecret`, `fbcallback`, `graph_ver`, `finalredir`, `req_cap`, `req_num`, `min_pw`, `max_pw`, `min_un`, `max_un`, `messaging`, `snooping`, `echouser`, `wys`, `change_un`, `backup_dest`, `backup_source`, `backup_table`, `msg_notification`, `permission_restriction`, `auto_assign_un`, `page_permission_restriction`, `msg_blocked_users`, `msg_default_to`, `notifications`, `notif_daylimit`, `recap_public`, `recap_private`, `page_default_private`, `navigation_type`, `copyright`, `custom_settings`, `system_announcement`, `twofa`) VALUES
-(1, 0, 0, 0, '../users/css/color_schemes/bootstrap.min.css', '../users/css/sb-admin.css', '../users/css/custom.css', 'UserSpice', 'en', 1, 0, 1, 0, 0, '', '', '', '', '', '', '', '', '', 1, 1, 6, 30, 4, 30, 1, 1, 1, 1, 0, '/', 'everything', '', 0, 0, 0, 0, 0, 1, 1, 7, '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe', 1, 0, 'UserSpice', 1, '', 0);
+INSERT INTO `settings` (`id`, `recaptcha`, `force_ssl`, `css_sample`, `us_css1`, `us_css2`, `us_css3`, `site_name`, `language`, `track_guest`, `site_offline`, `force_pr`, `glogin`, `fblogin`, `gid`, `gsecret`, `gredirect`, `ghome`, `fbid`, `fbsecret`, `fbcallback`, `graph_ver`, `finalredir`, `req_cap`, `req_num`, `min_pw`, `max_pw`, `min_un`, `max_un`, `messaging`, `snooping`, `echouser`, `wys`, `change_un`, `backup_dest`, `backup_source`, `backup_table`, `msg_notification`, `permission_restriction`, `auto_assign_un`, `page_permission_restriction`, `msg_blocked_users`, `msg_default_to`, `notifications`, `notif_daylimit`, `recap_public`, `recap_private`, `page_default_private`, `navigation_type`, `copyright`, `custom_settings`, `system_announcement`, `twofa`, `force_notif`, `cron_ip`) VALUES
+(1, 0, 0, 0, '../users/css/color_schemes/bootstrap.min.css', '../users/css/sb-admin.css', '../usersc/css/custom.css', 'UserSpice', 'en', 1, 0, 1, 0, 0, '', '', '', '', '', '', '', '', '', 1, 1, 6, 30, 4, 30, 1, 1, 1, 1, 0, '/', 'everything', '', 0, 0, 0, 0, 0, 1, 1, 7, '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe', 1, 0, 'UserSpice', 1, '', 0, 0, 'off');
 
 -- --------------------------------------------------------
 
@@ -740,11 +796,13 @@ INSERT INTO `settings` (`id`, `recaptcha`, `force_ssl`, `css_sample`, `us_css1`,
 -- Tabelstructuur voor tabel `updates`
 --
 
-CREATE TABLE `updates` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `updates`;
+CREATE TABLE IF NOT EXISTS `updates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `migration` varchar(15) NOT NULL,
-  `applied_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `applied_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `updates`
@@ -752,7 +810,8 @@ CREATE TABLE `updates` (
 
 INSERT INTO `updates` (`id`, `migration`, `applied_on`) VALUES
 (15, '3GJYaKcqUtw7', '2018-01-16 23:05:58'),
-(16, '3GJYaKcqUtz8', '2018-01-16 23:05:58');
+(16, '3GJYaKcqUtz8', '2018-01-16 23:05:58'),
+(17, '2XQjsKYJAfn1', '2018-01-29 21:28:50');
 
 -- --------------------------------------------------------
 
@@ -760,8 +819,9 @@ INSERT INTO `updates` (`id`, `migration`, `applied_on`) VALUES
 -- Tabelstructuur voor tabel `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(155) NOT NULL,
   `email_new` varchar(155) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
@@ -797,16 +857,20 @@ CREATE TABLE `users` (
   `force_pr` int(1) NOT NULL DEFAULT '0',
   `twoKey` varchar(16) DEFAULT NULL,
   `twoEnabled` int(1) DEFAULT '0',
-  `cloak_allowed` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `cloak_allowed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `EMAIL` (`email`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `email_new`, `username`, `password`, `fname`, `lname`, `permissions`, `editmode`, `logins`, `account_owner`, `account_id`, `company`, `join_date`, `last_login`, `email_verified`, `vericode`, `active`, `oauth_provider`, `oauth_uid`, `gender`, `locale`, `gpluslink`, `picture`, `created`, `modified`, `fb_uid`, `un_changed`, `msg_exempt`, `last_confirm`, `protected`, `dev_user`, `msg_notification`, `force_pr`, `twoKey`, `twoEnabled`, `cloak_allowed`) VALUES
-(1, 'userspicephp@gmail.com', NULL, 'admin', '$2y$12$1v06jm2KMOXuuo3qP7erTuTIJFOnzhpds1Moa8BadnUUeX0RV3ex.', 'The', 'Admin', 1, 1, 17, 1, 0, 'UserSpice', '2016-01-01 00:00:00', '2018-01-21 02:57:06', 1, 'SsCzd1kY9sjkY9T', 0, '', '', '', '', '', '', '0000-00-00 00:00:00', '1899-11-30 00:00:00', '', 0, 1, '2018-01-21 03:57:06', 1, 0, 1, 0, NULL, 0, 0),
-(2, 'noreply@userspice.com', NULL, 'user', '$2y$12$HZa0/d7evKvuHO8I3U8Ff.pOjJqsGTZqlX8qURratzP./EvWetbkK', 'Sample', 'User', 1, 0, 0, 1, 0, 'none', '2016-01-02 00:00:00', '2017-10-08 15:47:41', 1, 'Ou4NwBpAHVKUBE4', 1, '', '', '', '', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 0, 0, NULL, 0, 0, 1, 0, NULL, 0, 0);
+(1, 'userspicephp@gmail.com', NULL, 'admin', '$2y$12$VILk4Ydz/A6b0IeOboucP.8TFaiZZt3UdkgRF86t12oPr/Vx5UGTi', 'The', 'Admin', 1, 1, 23, 1, 0, 'UserSpice', '2016-01-01 00:00:00', '2018-01-29 05:37:19', 1, 'SsCzd1kY9sjkY9T', 0, '', '', '', '', '', '', '0000-00-00 00:00:00', '1899-11-30 00:00:00', '', 0, 1, '2018-01-29 06:37:19', 1, 0, 1, 0, NULL, 0, 0),
+(2, 'noreply@userspice.com', NULL, 'user', '$2y$12$HZa0/d7evKvuHO8I3U8Ff.pOjJqsGTZqlX8qURratzP./EvWetbkK', 'Sample', 'User', 1, 0, 1, 1, 0, 'none', '2016-01-02 00:00:00', '2018-01-22 13:26:20', 1, 'Ou4NwBpAHVKUBE4', 1, '', '', '', '', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 0, 0, '2018-01-22 14:26:20', 0, 0, 1, 0, NULL, 0, 0),
+(11, 'test@test.com', NULL, 'test', '$2y$12$Cucx2uruHbz.ZToKqh9jRO8PY/vo.RBRxkOFTbFJABy.6nNHNh/Vu', 'Test', 'Test', 1, 0, 1, 1, 0, '', '2018-01-25 11:28:53', '2018-01-25 11:28:53', 1, 'BXGOlG1gy2iLbiH', 1, '', '', '', '', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 0, 0, '2018-01-25 11:28:53', 0, 0, 1, 0, NULL, 0, 0),
+(12, 'kaare.grytting.bye@gmail.com', NULL, 'kaaregb', '$2y$12$YDv9J4lvhp9zzHJQuoTnFOGOkmDtIw0j5wJNt8.h4O7eTDp7ZOmiO', 'Kaare', 'Grytting Bye', 1, 0, 1, 1, 0, '', '2018-01-27 15:39:23', '2018-01-27 15:39:24', 1, 'IOzpTWaqpgebWyT', 1, '', '', '', '', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 0, 0, '2018-01-27 15:39:24', 0, 0, 1, 0, NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -814,20 +878,22 @@ INSERT INTO `users` (`id`, `email`, `email_new`, `username`, `password`, `fname`
 -- Tabelstructuur voor tabel `users_online`
 --
 
-CREATE TABLE `users_online` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `users_online`;
+CREATE TABLE IF NOT EXISTS `users_online` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `ip` varchar(15) NOT NULL,
   `timestamp` varchar(15) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `session` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `session` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users_online`
 --
 
 INSERT INTO `users_online` (`id`, `ip`, `timestamp`, `user_id`, `session`) VALUES
-(1, '94.209.241.31', '1516504060', 1, '');
+(1, '::1', '1517269827', 1, '');
 
 -- --------------------------------------------------------
 
@@ -835,12 +901,21 @@ INSERT INTO `users_online` (`id`, `ip`, `timestamp`, `user_id`, `session`) VALUE
 -- Tabelstructuur voor tabel `users_session`
 --
 
-CREATE TABLE `users_session` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users_session`;
+CREATE TABLE IF NOT EXISTS `users_session` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `hash` varchar(255) NOT NULL,
-  `uagent` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `uagent` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `users_session`
+--
+
+INSERT INTO `users_session` (`id`, `user_id`, `hash`, `uagent`) VALUES
+(2, 12, '79e5322959cd0707109425d4c49451d6d8f9caa10c1804c54fb7eb697176af9f', 'Mozilla (Windows NT 10.0; Win64; x64) AppleWebKit (KHTML, like Gecko) Chrome Safari');
 
 -- --------------------------------------------------------
 
@@ -848,11 +923,13 @@ CREATE TABLE `users_session` (
 -- Tabelstructuur voor tabel `user_permission_matches`
 --
 
-CREATE TABLE `user_permission_matches` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `user_permission_matches`;
+CREATE TABLE IF NOT EXISTS `user_permission_matches` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `user_permission_matches`
@@ -861,7 +938,9 @@ CREATE TABLE `user_permission_matches` (
 INSERT INTO `user_permission_matches` (`id`, `user_id`, `permission_id`) VALUES
 (100, 1, 1),
 (101, 1, 2),
-(102, 2, 1);
+(102, 2, 1),
+(111, 11, 1),
+(112, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -869,12 +948,14 @@ INSERT INTO `user_permission_matches` (`id`, `user_id`, `permission_id`) VALUES
 -- Tabelstructuur voor tabel `us_ip_blacklist`
 --
 
-CREATE TABLE `us_ip_blacklist` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `us_ip_blacklist`;
+CREATE TABLE IF NOT EXISTS `us_ip_blacklist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
   `last_user` int(11) NOT NULL DEFAULT '0',
-  `reason` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `reason` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `us_ip_blacklist`
@@ -891,12 +972,14 @@ INSERT INTO `us_ip_blacklist` (`id`, `ip`, `last_user`, `reason`) VALUES
 -- Tabelstructuur voor tabel `us_ip_list`
 --
 
-CREATE TABLE `us_ip_list` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `us_ip_list`;
+CREATE TABLE IF NOT EXISTS `us_ip_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `us_ip_list`
@@ -904,7 +987,12 @@ CREATE TABLE `us_ip_list` (
 
 INSERT INTO `us_ip_list` (`id`, `ip`, `user_id`, `timestamp`) VALUES
 (1, '::1', 1, '2017-10-09 15:20:03'),
-(2, '94.209.241.31', 1, '2018-01-17 00:47:30');
+(2, '94.209.241.31', 1, '2018-01-17 00:47:30'),
+(3, '134.41.206.127', 1, '2018-01-21 16:04:11'),
+(4, '179.55.111.87', 2, '2018-01-22 13:26:20'),
+(5, '94.157.227.43', 1, '2018-01-24 17:42:36'),
+(6, '92.40.255.115', 11, '2018-01-25 11:28:53'),
+(7, '88.84.37.164', 12, '2018-01-27 15:39:24');
 
 -- --------------------------------------------------------
 
@@ -912,10 +1000,12 @@ INSERT INTO `us_ip_list` (`id`, `ip`, `user_id`, `timestamp`) VALUES
 -- Tabelstructuur voor tabel `us_ip_whitelist`
 --
 
-CREATE TABLE `us_ip_whitelist` (
-  `id` int(11) NOT NULL,
-  `ip` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `us_ip_whitelist`;
+CREATE TABLE IF NOT EXISTS `us_ip_whitelist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `us_ip_whitelist`
@@ -926,350 +1016,6 @@ INSERT INTO `us_ip_whitelist` (`id`, `ip`) VALUES
 (3, '192.168.0.23');
 
 --
--- Indexen voor geëxporteerde tabellen
---
-
---
--- Indexen voor tabel `agenda`
---
-ALTER TABLE `agenda`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `articles`
---
-ALTER TABLE `articles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `attendees`
---
-ALTER TABLE `attendees`
-  ADD PRIMARY KEY (`regid`),
-  ADD KEY `id` (`eventid`),
-  ADD KEY `userid` (`userid`);
-
---
--- Indexen voor tabel `audit`
---
-ALTER TABLE `audit`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `crons`
---
-ALTER TABLE `crons`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `crons_logs`
---
-ALTER TABLE `crons_logs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `email`
---
-ALTER TABLE `email`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `gallery`
---
-ALTER TABLE `gallery`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `groups_menus`
---
-ALTER TABLE `groups_menus`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `group_id` (`group_id`),
-  ADD KEY `menu_id` (`menu_id`);
-
---
--- Indexen voor tabel `keys`
---
-ALTER TABLE `keys`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `logs`
---
-ALTER TABLE `logs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `logs_exempt`
---
-ALTER TABLE `logs_exempt`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `logs_exempt_type` (`name`);
-
---
--- Indexen voor tabel `menus`
---
-ALTER TABLE `menus`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `message_threads`
---
-ALTER TABLE `message_threads`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `mqtt`
---
-ALTER TABLE `mqtt`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `pages`
---
-ALTER TABLE `pages`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `permission_page_matches`
---
-ALTER TABLE `permission_page_matches`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `profiles`
---
-ALTER TABLE `profiles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `updates`
---
-ALTER TABLE `updates`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `EMAIL` (`email`) USING BTREE;
-
---
--- Indexen voor tabel `users_online`
---
-ALTER TABLE `users_online`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `users_session`
---
-ALTER TABLE `users_session`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `user_permission_matches`
---
-ALTER TABLE `user_permission_matches`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `us_ip_blacklist`
---
-ALTER TABLE `us_ip_blacklist`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `us_ip_list`
---
-ALTER TABLE `us_ip_list`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexen voor tabel `us_ip_whitelist`
---
-ALTER TABLE `us_ip_whitelist`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT voor geëxporteerde tabellen
---
-
---
--- AUTO_INCREMENT voor een tabel `agenda`
---
-ALTER TABLE `agenda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `articles`
---
-ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT voor een tabel `attendees`
---
-ALTER TABLE `attendees`
-  MODIFY `regid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT voor een tabel `audit`
---
-ALTER TABLE `audit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT voor een tabel `crons`
---
-ALTER TABLE `crons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT voor een tabel `crons_logs`
---
-ALTER TABLE `crons_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT voor een tabel `email`
---
-ALTER TABLE `email`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT voor een tabel `gallery`
---
-ALTER TABLE `gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
---
--- AUTO_INCREMENT voor een tabel `groups_menus`
---
-ALTER TABLE `groups_menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
---
--- AUTO_INCREMENT voor een tabel `keys`
---
-ALTER TABLE `keys`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT voor een tabel `logs`
---
-ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
---
--- AUTO_INCREMENT voor een tabel `logs_exempt`
---
-ALTER TABLE `logs_exempt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT voor een tabel `menus`
---
-ALTER TABLE `menus`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
---
--- AUTO_INCREMENT voor een tabel `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `message_threads`
---
-ALTER TABLE `message_threads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `mqtt`
---
-ALTER TABLE `mqtt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `notifications`
---
-ALTER TABLE `notifications`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT voor een tabel `pages`
---
-ALTER TABLE `pages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
---
--- AUTO_INCREMENT voor een tabel `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `permission_page_matches`
---
-ALTER TABLE `permission_page_matches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
---
--- AUTO_INCREMENT voor een tabel `profiles`
---
-ALTER TABLE `profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT voor een tabel `settings`
---
-ALTER TABLE `settings`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT voor een tabel `updates`
---
-ALTER TABLE `updates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT voor een tabel `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT voor een tabel `users_online`
---
-ALTER TABLE `users_online`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `users_session`
---
-ALTER TABLE `users_session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT voor een tabel `user_permission_matches`
---
-ALTER TABLE `user_permission_matches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
---
--- AUTO_INCREMENT voor een tabel `us_ip_blacklist`
---
-ALTER TABLE `us_ip_blacklist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT voor een tabel `us_ip_list`
---
-ALTER TABLE `us_ip_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT voor een tabel `us_ip_whitelist`
---
-ALTER TABLE `us_ip_whitelist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
 -- Beperkingen voor geëxporteerde tabellen
 --
 
@@ -1278,6 +1024,7 @@ ALTER TABLE `us_ip_whitelist`
 --
 ALTER TABLE `attendees`
   ADD CONSTRAINT `attendees_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
